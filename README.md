@@ -1,2 +1,2 @@
 # AutoHotKey
-AutoHotKey script for KDE-style window shortcuts in Windows
+my AutoHotKey script for KDE-style window shortcuts in Windows
