@@ -21,7 +21,7 @@ global hwnd_array := Array()
 
 	ShortCutGui.Show()
 
-	hotkeyOk.OnEvent("Click", OkFunc)
+	hotkeyOk.OnEvent("Click", AddNewHotkey)
 	hotkeyCancel.OnEvent("Click", CancelFunc)	
 
 }
@@ -40,20 +40,45 @@ CancelFunc(this*){
 	this[1].Gui.Destroy()
 }
 
-OkFunc(this,*){
+AddNewHotkey(this,*){
 	val := this.Gui["MyHotKey"].Value
-	if ( val != "") {
-		hkey := val
-		hkey_array.Push val
-		hwnd_array.Push active_id
 
-		MsgBox "hkey: " hkey ;just some check
-		this.Gui.Destroy()
+	if ( val != "") {
+		idx := SearchElementIdx(hkey_array, val)
+		MsgBox "index: " idx
+		if idx != 0 {
+			hkey_array[idx] := val
+			hwnd_array[idx] := active_id			
+			this.Gui.Destroy()
+		}else{
+			hkey_array.Push val
+			hwnd_array.Push active_id
+			this.Gui.Destroy()
+		}
 	}else{
-		hkey := ""
-		MsgBox "hkey: " hkey ;just some check
-		this.Gui.Destroy()
+		this.Gui.Destroy()	
 	}
+}
+
+SearchElementIdx(array, val){
+	len := array.Length
+
+	MsgBox "lenght: " len
+
+	if len == 0 {
+		return 0
+	}
+
+	;res := 0
+	Loop len{
+		MsgBox "actual element: " array[A_Index] "`n" "searched element: " val
+		if array[A_Index] == val{
+			MsgBox "loop lenght: " A_Index
+			return A_Index
+		}
+	}
+
+	return 0
 }
 
 PrintArrays(array1, array2){
